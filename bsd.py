@@ -1,24 +1,25 @@
 import numpy as np
 import cv2
-# H-цветовой тон, цвет
-# S-saturation-насыщенность
-#V-value-яркость
-# L-low (нижняя граница)
-#H-high (верхняя граница)
-#Lh- нижняя граница цвета
+# H - цветовой тон цвет
+# S - saturation - насыщенность
+# V - value - яркость
+# L - low нижняя граница цвета
+# h - high верхняя граница
+# lh - нижняя граница цвета
 cv2.namedWindow("mask")
-
+lh, ls, lv = (1, 0, 120)
+hh, hs, hv = (50, 255, 255)
 
 def nothing(x):
     pass
 
 
-cv2.createTrackbar("lh", "mask", 0, 255, nothing)
-cv2.createTrackbar("ls", "mask", 0, 255, nothing)
-cv2.createTrackbar("lv", "mask", 0, 255, nothing)
-cv2.createTrackbar("hh", "mask", 255, 255, nothing)
-cv2.createTrackbar("hs", "mask", 255, 255, nothing)
-cv2.createTrackbar("hv", "mask", 255, 255, nothing)
+cv2.createTrackbar("lh", "mask", lh, 255, nothing)
+cv2.createTrackbar("ls", "mask", ls, 255, nothing)
+cv2.createTrackbar("lv", "mask", lv, 255, nothing)
+cv2.createTrackbar("hh", "mask", hh, 255, nothing)
+cv2.createTrackbar("hs", "mask", hs, 255, nothing)
+cv2.createTrackbar("hv", "mask", hv, 255, nothing)
 
 cam = cv2.VideoCapture(0)
 
@@ -40,6 +41,7 @@ while (True):
     hh = cv2.getTrackbarPos("hh", "mask")
     hs = cv2.getTrackbarPos("hs", "mask")
     hv = cv2.getTrackbarPos("hv", "mask")
+    print(lh, ls, lv, hh, hs, hv)
 
     mask = cv2.inRange(hsv, (lh, ls, lv), (hh, hs, hv))
 
@@ -68,12 +70,12 @@ while (True):
 
         # print(a)
 
-        if (a >= 500 and a < 5500):
+        if (a >= 500):
             filtered[np.where(labels == i)] = 255
             # print(a)
 
             cv2.putText(frame, str(a), (l, t), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
-            cv2.rectangle(frame, (l, t), (l + w, t + h), (0, 255, 0), 2)
+            cv2.rectangle(frame, (l, t), (l + w, t + h), (255, 255, 0), 2)
 
     # print("=====================")
     # break
